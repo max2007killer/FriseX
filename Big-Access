@@ -1,0 +1,76 @@
+local function tween(...)
+    game:GetService("TweenService"):Create(...):Play()
+end
+
+game:GetService("ReplicatedFirst"):RemoveDefaultLoadingScreen()
+local loading = Instance.new("ScreenGui")
+local background = Instance.new("Frame")
+local gradient = Instance.new("UIGradient")
+local status = Instance.new('TextLabel')
+
+loading.Name = "loading"
+loading.Parent = game:GetService("CoreGui")
+loading.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+background.Name = "background"
+background.Parent = loading
+background.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+background.Position = UDim2.new(0, 0, -0.100000001, 0)
+background.Size = UDim2.new(1, 0, -1.10000002, 0)
+
+gradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 0, 0)), ColorSequenceKeypoint.new(0.0, Color3.fromRGB(200, 0, 0)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(76, 76, 76))}
+gradient.Rotation = 90
+gradient.Name = "gradient"
+gradient.Parent = background
+
+status.Name = "status"
+status.Parent = loading
+status.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+status.BackgroundTransparency = 0
+status.Position = UDim2.new(0, 0, 0.7, 0)
+status.Size = UDim2.new(1, 0, 0.2355480109, 0)
+status.Font = Enum.Font.SourceSansItalic
+status.Text = "Loading.."
+status.TextColor3 = Color3.fromRGB(0, 0, 0)
+status.TextScaled = false
+status.TextSize = 30.000
+status.TextStrokeColor3 = Color3.fromRGB(255, 0, 0)
+status.TextStrokeTransparency = 0.300
+status.TextWrapped = false
+if syn then syn.protect_gui(loading) end
+
+repeat wait() until game:GetService("Players").LocalPlayer
+status.Text = "Loading BIG ACCESSORY [6-8 sec]"
+
+if not game:IsLoaded() then
+    game.Loaded:wait()
+end
+
+local baseplate = Instance.new("Part")
+baseplate.Parent = workspace
+baseplate.Size = Vector3.new(0,0,0) -- change size
+baseplate.Anchored = true
+baseplate.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0,10,0) -- higher number for it to spawn higher
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = baseplate.CFrame + Vector3.new(0,10,0)
+game.Players.LocalPlayer.Character.LeftLowerLeg.Anchored = false
+
+local character = game.Players.LocalPlayer.Character
+
+for i,v in pairs(character:GetChildren()) do
+    if v:IsA("Accessory") then
+        sethiddenproperty(v,"BackendAccoutrementState", 0) --prepare for hat to be rewelded
+        for i,v in pairs(v.Handle:GetChildren()) do
+            if v:IsA("Attachment") then v:remove() end --remove attachments so that they get welded to head
+        end
+    end
+end
+
+loadstring(game:HttpGet('https://raw.githubusercontent.com/DigitalityScripts/roblox-scripts/main/hat%20%2B%20head%20resize'))()
+wait(8)
+game.CoreGui.loading:Destroy()
+local text   = ""
+local Event = game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest
+local function say() 
+Event:FireServer(text, "All")
+end
+text = "dsc.gg/ragdoll-crasher" say() 
